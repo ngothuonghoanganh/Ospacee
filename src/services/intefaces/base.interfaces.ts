@@ -2,7 +2,7 @@ import { ObjectId } from "mongodb"
 
 export interface AuditingEntity {
    createdAt?: Date
-   updatedAte?: Date
+   updatedAt?: Date
 }
 
 export interface BaseEntity extends AuditingEntity{

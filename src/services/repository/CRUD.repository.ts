@@ -1,7 +1,7 @@
 import { BadRequestException, Inject } from "@nestjs/common";
 import { Collection, Filter, FindOptions, MongoClient, OptionalUnlessRequiredId, WithId } from "mongodb";
 import { BaseEntity } from "../intefaces/base.interfaces";
-
+import * as moment from "moment"
 export abstract class CRUDRepository<T extends BaseEntity = any> {
     collectionName
     @Inject('DATABASE_CONNECTION')
@@ -26,8 +26,12 @@ export abstract class CRUDRepository<T extends BaseEntity = any> {
         return this.collection.find(filter, optionns).toArray()
     }
 
+    async findOne(filter: Filter<T>, optionns?: FindOptions): Promise<WithId<T>> {
+        return this.collection.findOne(filter, optionns)
+    }
+
     async create(data: OptionalUnlessRequiredId<T>): Promise<WithId<T>> {
-        const insertData = await this.collection.insertOne(data)
+        const insertData = await this.collection.insertOne({ ...data, createdAt: moment().toISOString(), updatedAt: moment().toISOString() })
         return this.collection.findOne({ _id: insertData.insertedId as Filter<T> })
     }
-}
+} 
