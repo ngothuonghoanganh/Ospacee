@@ -1,7 +1,7 @@
 import { CRUDRepository } from "src/services/repository/CRUD.repository";
 import { AuthDto } from "./dto/auth.dto";
-import * as bcrypt from "bcrypt"
 import { BadRequestException } from "@nestjs/common";
+import * as bcrypt from "bcrypt"
 
 export class AuthRepo extends CRUDRepository<AuthDto> {
     constructor() {
@@ -21,5 +21,11 @@ export class AuthRepo extends CRUDRepository<AuthDto> {
         const hashPassword = await bcrypt.hash(userInfo.password, 10)
         userInfo.password = hashPassword
         return this.create(userInfo)
+    }
+
+    async login(userInfo: AuthDto): Promise<AuthDto> {
+        return this.findOne({
+            username: userInfo.username
+        })
     }
 }
