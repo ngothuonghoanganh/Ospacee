@@ -8,7 +8,6 @@ import { AuthDto } from "../dto/auth.dto";
 
 @Injectable()
 export class AuthenticationMiddleWare extends CRUDRepository<AuthDto> implements NestMiddleware {
-    // constructor(private readonly authRepo: AuthRepo) { }
     constructor(){
         super("users")
     }
